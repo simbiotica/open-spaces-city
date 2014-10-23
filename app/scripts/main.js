@@ -5,11 +5,7 @@ require.config({
   paths: {
     jquery: '../../bower_components/jquery/dist/jquery',
     underscore: '../../bower_components/underscore/underscore',
-    backbone: '../../bower_components/backbone/backbone',
-    handlebars: '../../bower_components/handlebars/handlebars',
-    text: '../../bower_components/requirejs-text/text',
-    underscoreString: '../../bower_components/underscore.string/lib/underscore.string',
-    spin: '../../bower_components/spinjs/spin'
+    backbone: '../../bower_components/backbone/backbone'
   },
 
   shim: {
@@ -22,13 +18,6 @@ require.config({
     backbone: {
       deps: ['jquery', 'underscore'],
       exports: 'Backbone'
-    },
-    underscoreString: {
-      deps: ['underscore'],
-      exports: '_'
-    },
-    spin: {
-      exports: 'Spinner'
     }
   }
 
@@ -38,8 +27,12 @@ require.config({
 require([
   'jquery',
   'backbone',
-  'Router'
-], function($, Backbone, Router) {
+  'router',
+  'views/mapView'
+], function($, Backbone, Router, MapView) {
+
+  new MapView();
+
 
   window.router = new Router();
 

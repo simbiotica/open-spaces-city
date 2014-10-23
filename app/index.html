@@ -12,35 +12,14 @@
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,700">
     <link rel="stylesheet" href="//libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css">
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="bower_components/normalize-css/normalize.css">
+    <link rel="stylesheet" href="bower_components/normalize.css/normalize.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
   <body>
-
-    <header class="layout-header">
-      <div class="wrap">
-        <div class="row">
-          <div class="grid-12">
-            <div id="headerView">
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <section class="layout-page" id="mapView">
-      
-    </section>
-
-    <section class="layout-page" id="notFoundPage">
-      <div class="wrap">
-        <div class="row">
-          <div class="grid-12">
-            <p>The url not exists.</p>
-          </div>
-        </div>
-      </div>
+    
+    <section class="layout-page">
+      <div class="layout-map" id="mapView"></div>
     </section>
 
     <script src="//libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
