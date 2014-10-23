@@ -39,9 +39,15 @@ require.config({
 require([
   'jquery',
   'backbone',
+  'router',
   'views/mapView'
-], function($, Backbone, MapView) {
+], function($, Backbone, Router, MapView) {
 
   new MapView();
+
+
+  window.router = new Router();
+
+  Backbone.history.start();
 
 });
