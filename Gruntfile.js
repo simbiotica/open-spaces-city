@@ -9,43 +9,11 @@ module.exports = function(grunt) {
 
     root: {
       app: 'app/assets',
-      dist: 'public/assets',
+      build: 'public/assets',
     },
 
-    // connect: {
-    //   options: {
-    //     port: 8000,
-    //     open: true,
-    //     hostname: 'localhost'
-    //   },
-    //   server: {
-    //     options: {
-    //       middleware: function(connect) {
-    //         return [
-    //           connect().use('/bower_components', connect.static('./bower_components')),
-    //           connect.static('app')
-    //         ];
-    //       }
-    //     }
-    //   },
-    //   test: {
-    //     options: {
-    //       open: false,
-    //       port: 8001,
-    //       middleware: function(connect) {
-    //         return [
-    //           connect.static('.tmp'),
-    //           connect.static('test'),
-    //           connect().use('/bower_components', connect.static('./bower_components')),
-    //           connect.static('app')
-    //         ];
-    //       }
-    //     }
-    //   }
-    // },
-
     clean: {
-      files: '<%= root.dist %>'
+      files: '<%= root.build %>'
     },
 
     copy: {
@@ -54,10 +22,9 @@ module.exports = function(grunt) {
           expand: true,
           dot: true,
           cwd: '<%= root.app %>',
-          dest: '<%= root.dist %>',
+          dest: '<%= root.build %>',
           src: [
-            '*.{ico,png,txt}',
-            '{,*/}*.html'
+            '*.{ico,png,txt}'
           ]
         }]
       },
@@ -66,7 +33,7 @@ module.exports = function(grunt) {
           expand: true,
           dot: true,
           cwd: '<%= root.app %>/scripts',
-          dest: '<%= root.dist %>/scripts',
+          dest: '<%= root.build %>/scripts',
           src: [
             '{,*/}*.*'
           ]
@@ -95,28 +62,7 @@ module.exports = function(grunt) {
       },
       compile: {
         files: {
-          '<%= root.dist %>/styles/main.css': '<%= root.app %>/styles/main.styl'
-        }
-      }
-    },
-
-    cssmin: {
-      dist: {
-        files: {
-          '<%= root.dist %>/styles/main.css': [
-            './bower_components/normalize-css/normalize.css',
-            './bower_components/selectize/dist/css/selectize.css',
-            '<%= root.tmp %>/styles/{,*/}*.css'
-          ]
-        }
-      }
-    },
-
-    mocha: {
-      all: {
-        options: {
-          run: true,
-          urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
+          '<%= root.build %>/styles/main.css': '<%= root.app %>/styles/main.styl'
         }
       }
     },
@@ -134,90 +80,47 @@ module.exports = function(grunt) {
       ]
     },
 
-    requirejs: {
-      compile: {
-        options: {
-          almond: true,
-          wrap: true,
-          useStrict: true,
-          removeCombined: true,
-          baseUrl: './',
-          mainConfigFile: '<%= root.app %>/scripts/main.js',
-          replaceRequireScript: [{
-            files: ['<%= root.dist %>/index.html'],
-            module: 'main'
-          }],
-          modules: [{name: 'main'}],
-          appDir: '<%= root.app %>/scripts/',
-          dir: '<%= root.dist %>/scripts/',
-        }
-      }
-    },
+    // requirejs: {
+    //   compile: {
+    //     options: {
+    //       almond: true,
+    //       wrap: true,
+    //       useStrict: true,
+    //       removeCombined: true,
+    //       baseUrl: './',
+    //       mainConfigFile: '<%= root.app %>/scripts/main.js',
+    //       replaceRequireScript: [{
+    //         files: ['<%= root.dist %>/index.html'],
+    //         module: 'main'
+    //       }],
+    //       modules: [{name: 'main'}],
+    //       appDir: '<%= root.app %>/scripts/',
+    //       dir: '<%= root.dist %>/scripts/',
+    //     }
+    //   }
+    // },
 
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= root.app %>/images/',
-          src: ['**/*.{png,jpg,gif}'],
-          dest: '<%= root.dist %>/images/'
-        }]
-      }
-    },
+    // imagemin: {
+    //   dist: {
+    //     files: [{
+    //       expand: true,
+    //       cwd: '<%= root.app %>/images/',
+    //       src: ['**/*.{png,jpg,gif}'],
+    //       dest: '<%= root.dist %>/images/'
+    //     }]
+    //   }
+    // },
 
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= root.app %>/images/',
-          src: ['**/*.svg'],
-          dest: '<%= root.dist %>/images/'
-        }]
-      }
-    },
-
-    useminPrepare: {
-      options: {
-        dest: '<%= root.dist %>',
-        flow: {
-          html: {
-            steps: { js: [], css: [] },
-            post: {}
-          }
-        }
-      },
-      html: '<%= root.app %>/index.html'
-    },
-
-    usemin: {
-      options: {
-        assetsDirs: ['<%= root.dist %>', '<%= root.dist %>/images']
-      },
-      html: ['<%= root.dist %>/{,*/}*.html'],
-      css: ['<%= root.dist %>/styles/{,*/}*.css']
-    },
-
-    htmlmin: {
-      dist: {
-        options: {
-          collapseBooleanAttributes: true,
-          collapseWhitespace: true,
-          conservativeCollapse: true,
-          removeAttributeQuotes: true,
-          removeCommentsFromCDATA: true,
-          removeEmptyAttributes: true,
-          removeOptionalTags: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= root.dist %>',
-          src: '{,*/}*.html',
-          dest: '<%= root.dist %>'
-        }]
-      }
-    },
+    // svgmin: {
+    //   dist: {
+    //     files: [{
+    //       expand: true,
+    //       cwd: '<%= root.app %>/images/',
+    //       src: ['**/*.svg'],
+    //       dest: '<%= root.dist %>/images/'
+    //     }]
+    //   }
+    // },
 
     watch: {
       styles: {
@@ -231,29 +134,13 @@ module.exports = function(grunt) {
           livereload: true
         },
         files: '<%= jshint.all %>',
-        tasks: ['jshint']
-      },
-      livereload: {
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        },
-        files: [
-          '<%= root.app %>/{,*/}*.html',
-          '<%= root.tmp %>/styles/{,*/}*.css',
-          '<%= root.app %>/images/{,*/}*'
-        ]
+        tasks: ['jshint', 'copy:scripts']
       }
-    },
-
-    'gh-pages': {
-      options: {
-        base: 'dist'
-      },
-      src: ['**']
     },
 
     concurrent: {
       server: [
+        'copy:scripts',
         'stylus'
       ]
     }
@@ -263,40 +150,17 @@ module.exports = function(grunt) {
   grunt.registerTask('server', [
     'clean',
     'bower',
-    'copy:scripts',
     'concurrent:server',
-    // 'connect:server',
     'watch'
   ]);
 
   grunt.registerTask('test', [
-    // 'connect:test',
     'jshint',
     'mocha'
   ]);
 
   grunt.registerTask('default', [
     'server'
-  ]);
-
-  grunt.registerTask('build', [
-    // 'test',
-    'clean',
-    'bower',
-    'useminPrepare',
-    'copy:dist',
-    'stylus',
-    'requirejs',
-    'cssmin',
-    'imagemin',
-    'svgmin',
-    'usemin',
-    'htmlmin'
-  ]);
-
-  grunt.registerTask('deploy', [
-    'build',
-    'gh-pages'
   ]);
 
 };
