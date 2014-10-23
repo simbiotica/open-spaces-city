@@ -1,55 +1,45 @@
-var request = require('request');
-var qs = require('querystring');
-var CONSUMER_KEY = 'C82vnVLgfp99hUNzTf5bDbewX';
-var CONSUMER_SECRET = 'NY0CNdUM5I5n1VP4jdv5AA0KlZTHpi1GWqIgOIVVAoO5V44IiE';
-
-// Twitter OAuth
-var oauth = {
-      consumer_key: CONSUMER_KEY,
-      consumer_secret: CONSUMER_SECRET
-    },
-    url = 'https://api.twitter.com/oauth/request_token';
+var _ = require('underscore');
+var sentiment = require('../../../../lib/sentiment');
+var json2csv = require('json2csv');
+var twitter = require('twitter');
+var twit = new twitter({
+    consumer_key: 'C82vnVLgfp99hUNzTf5bDbewX',
+    consumer_secret: 'NY0CNdUM5I5n1VP4jdv5AA0KlZTHpi1GWqIgOIVVAoO5V44IiE',
+    access_token_key: '140712406-UXhldqAE8JCTDMh19tMYyKWP9bjptWRoQ5EgLKnk',
+    access_token_secret: 'RulpLSmqhVTKFNgrx4XZrVR5E0jj9BS4yCWDJGulNYxwp'
+});
 
 module.exports = {
 
   index: function(req, res) {
 
-    request.post({url:url, oauth:oauth}, function (e, r, body) {
-    // Ideally, you would take the body in the response
-    // and construct a URL that a user clicks on (like a sign in button).
-    // The verifier is only available in the response after a user has
-    // verified with twitter that they are authorizing your app.
-    var access_token = qs.parse(body)
-      , oauth =
-        { consumer_key: CONSUMER_KEY
-        , consumer_secret: CONSUMER_SECRET
-        , token: access_token.oauth_token
-        , verifier: access_token.oauth_verifier
-        }
-      , url = 'https://api.twitter.com/oauth/access_token'
-      ;
-    console.log(access_token);
-    request.post({url:url, oauth:oauth}, function (e, r, body) {
-      var perm_token = qs.parse(body)
-        , oauth =
-          { consumer_key: CONSUMER_KEY
-          , consumer_secret: CONSUMER_SECRET
-          , token: perm_token.oauth_token
-          , token_secret: perm_token.oauth_token_secret
-          }
-        , url = 'https://api.twitter.com/1.1/users/show.json?'
-        , params =
-          { screen_name: perm_token.screen_name
-          , user_id: perm_token.user_id
-          }
-        ;
-      url += qs.stringify(params);
-      console.log(perm_token);
-      request.get({url:url, oauth:oauth, json:true}, function (e, r, user) {
-        console.log(user)
-      })
-    })
-  })
+    var format = req.query.format, result;
+
+    twit.search('park', {
+      count: 100,
+      geocode: '40.7056308,-73.9780035,10km'
+    }, function(tweets) {
+      result = _.map(tweets.statuses, function(tweet) {
+        return {
+          text: tweet.text,
+          score: sentiment(tweet.text).score,
+          coordinates: tweet.coordinates
+        };
+      });
+
+      if (format === 'json') {
+        return res.json(result);
+      }
+
+      json2csv({data: result, fields: ['text', 'score', 'coordinates']}, function(err, csv) {
+        if (err) {
+          res.json(err);
+        };
+        res.set('Content-Type', 'text/plain');
+        res.send(csv);
+      });
+
+    });
 
   }
 
