@@ -1,0 +1,11 @@
+#botanical_gardens{
+	marker-fill-opacity: 0.9;
+	marker-line-color: #FFF;
+	marker-line-width: 1.5;
+	marker-line-opacity: 1;
+	marker-placement: point;
+	marker-type: ellipse;
+	marker-width: 20;
+	marker-fill: #4099FF;
+	marker-allow-overlap: true;
+}

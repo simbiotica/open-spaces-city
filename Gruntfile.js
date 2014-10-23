@@ -8,51 +8,44 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     root: {
-      app: 'app',
-      dist: 'dist',
-      test: 'test',
-      tmp: '.tmp'
+      app: 'app/assets',
+      dist: 'public/assets',
     },
 
-    connect: {
-      options: {
-        port: 8000,
-        open: true,
-        hostname: 'localhost'
-      },
-      server: {
-        options: {
-          middleware: function(connect) {
-            return [
-              connect.static('.tmp'),
-              connect().use('/bower_components', connect.static('./bower_components')),
-              connect.static('app')
-            ];
-          }
-        }
-      },
-      test: {
-        options: {
-          open: false,
-          port: 8001,
-          middleware: function(connect) {
-            return [
-              connect.static('.tmp'),
-              connect.static('test'),
-              connect().use('/bower_components', connect.static('./bower_components')),
-              connect.static('app')
-            ];
-          }
-        }
-      }
-    },
+    // connect: {
+    //   options: {
+    //     port: 8000,
+    //     open: true,
+    //     hostname: 'localhost'
+    //   },
+    //   server: {
+    //     options: {
+    //       middleware: function(connect) {
+    //         return [
+    //           connect().use('/bower_components', connect.static('./bower_components')),
+    //           connect.static('app')
+    //         ];
+    //       }
+    //     }
+    //   },
+    //   test: {
+    //     options: {
+    //       open: false,
+    //       port: 8001,
+    //       middleware: function(connect) {
+    //         return [
+    //           connect.static('.tmp'),
+    //           connect.static('test'),
+    //           connect().use('/bower_components', connect.static('./bower_components')),
+    //           connect.static('app')
+    //         ];
+    //       }
+    //     }
+    //   }
+    // },
 
     clean: {
-      dist: [
-        '<%= root.tmp %>',
-        '<%= root.dist %>'
-      ],
-      server: '<%= root.tmp %>'
+      files: '<%= root.dist %>'
     },
 
     copy: {
@@ -65,6 +58,17 @@ module.exports = function(grunt) {
           src: [
             '*.{ico,png,txt}',
             '{,*/}*.html'
+          ]
+        }]
+      },
+      scripts: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= root.app %>/scripts',
+          dest: '<%= root.dist %>/scripts',
+          src: [
+            '{,*/}*.*'
           ]
         }]
       }
@@ -91,7 +95,7 @@ module.exports = function(grunt) {
       },
       compile: {
         files: {
-          '<%= root.tmp %>/styles/main.css': '<%= root.app %>/styles/main.styl'
+          '<%= root.dist %>/styles/main.css': '<%= root.app %>/styles/main.styl'
         }
       }
     },
@@ -125,8 +129,8 @@ module.exports = function(grunt) {
       all: [
         'Gruntfile.js',
         '<%= root.app %>/scripts/{,*/}{,*/}*.js',
-        '<%= root.test %>/specs/{,*/}{,*/}*.js',
-        '<%= root.test %>/runner.js'
+        // '<%= root.test %>/specs/{,*/}{,*/}*.js',
+        // '<%= root.test %>/runner.js'
       ]
     },
 
@@ -257,15 +261,16 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('server', [
-    'clean:server',
+    'clean',
     'bower',
+    'copy:scripts',
     'concurrent:server',
-    'connect:server',
+    // 'connect:server',
     'watch'
   ]);
 
   grunt.registerTask('test', [
-    'connect:test',
+    // 'connect:test',
     'jshint',
     'mocha'
   ]);
@@ -275,8 +280,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'test',
-    'clean:dist',
+    // 'test',
+    'clean',
     'bower',
     'useminPrepare',
     'copy:dist',
