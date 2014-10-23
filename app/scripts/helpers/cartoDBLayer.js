@@ -5,10 +5,14 @@ define([
   'underscoreString',
   'backbone',
   'Class',
+  //cartocss
+  'text!cartocss/parks-polygons.cartocss',
+  'text!cartocss/twitts.cartocss',
   // queries
-  'text!queries/parks-poligons.psql',
+  'text!queries/parks-polygons.psql',
+  'text!queries/twitts.psql',
 
-], function($, _, underscoreString, Backbone, Class, PARKPOLIGONS) {
+], function($, _, underscoreString, Backbone, Class,PARKPOLIGONSCSS,TWITTSCSS, PARKPOLIGONS,TWITTS) {
 
   var CartoDBLayer = Class.extend({
 
@@ -18,15 +22,12 @@ define([
       sublayers: []
     },
 
-    layers:{
-
-    },
-
     init: function(map,options) {
       this.map = map;
       this.options = _.extend({}, this.defaults, options || {});
 
-      this._setLayers();
+      this._setGeom();
+      this._setPoints();
 
       // this._setLayers();
       // this._setListeners();
@@ -35,11 +36,11 @@ define([
     },
 
     //Get Parks 
-    _setLayers: function(sql){
+    _setGeom: function(){
       var cartodbOptions = _.extend({}, this.options, {
         sublayers: [{
           sql: PARKPOLIGONS,
-          cartocss: '#table{polygon-fill: #ff0000;}'
+          cartocss: PARKPOLIGONSCSS
         }]
       });
 
@@ -51,8 +52,25 @@ define([
         .on('error', function(err) {
           throw err;
         });
+    },
 
+    //Get Parks 
+    _setPoints: function(){
+      var cartodbOptions = _.extend({}, this.options, {
+        sublayers: [{
+          sql: TWITTS,
+          cartocss: TWITTSCSS
+        }]
+      });
 
+      cartodb.createLayer(this.map, cartodbOptions)
+        .addTo(this.map)
+        .on('done', _.bind(function(layer) {
+          console.log('done');
+        }, this))
+        .on('error', function(err) {
+          throw err;
+        });
     },
 
     //Get Bounds  
