@@ -8,8 +8,10 @@ define([
 
   'use strict';
 
-  var tileUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';  
-  var tileUrl = 'https://3.maps.nlp.nokia.com/maptile/2.1/maptile/newest/reduced.day/{s}/{z}/{x}/{y}/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
+  // var tileUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+  var tileUrl = 'https://2.maps.nlp.nokia.com/maptile/2.1/maptile/newest/reduced.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
+  //             https://2.maps.nlp.nokia.com/maptile/2.1/maptile/newest/reduced.day/10/299/386/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24
+  //http://{1-4}.base.maps.cit.api.here.com/maptile/2.1/{type}/{map id}/{scheme}/{zoom}/{column}/{row}/{size}/{format}?app_id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg&{param}={value}
 
   var MapView = Backbone.View.extend({
 
