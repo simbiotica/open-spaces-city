@@ -19,8 +19,8 @@ define([
     options: {
       tile: tileUrl,
       map: {
-        center: [16, -16],
-        zoom: 3,
+        center: [40.7056308,-73.9780035],
+        zoom: 12,
         minZoom: 1,
         maxZoom: 14,
         zoomControl: false,
