@@ -5,7 +5,10 @@ require.config({
   paths: {
     jquery: '../../bower_components/jquery/dist/jquery',
     underscore: '../../bower_components/underscore/underscore',
-    backbone: '../../bower_components/backbone/backbone'
+    underscoreString: '../../bower_components/underscore.string/lib/underscore.string',
+    backbone: '../../bower_components/backbone/backbone',
+    Class: '../../bower_components/Class.js/Class',
+    text: '../../bower_components/requirejs-text/text'
   },
 
   shim: {
@@ -15,9 +18,16 @@ require.config({
     underscore: {
       exports: '_'
     },
+    underscoreString: {
+      deps: ['underscore'],
+      exports: '_'
+    },    
     backbone: {
       deps: ['jquery', 'underscore'],
       exports: 'Backbone'
+    },
+    Class: {
+      exports: 'Class'
     }
   }
 
