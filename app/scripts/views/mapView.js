@@ -2,7 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-], function($, _, Backbone) {
+  'helpers/CartoDBLayer',
+
+], function($, _, Backbone,CartoDBLayer) {
 
   'use strict';
 
@@ -20,8 +22,8 @@ define([
       tile: tileUrl,
       map: {
         center: [40.7056308,-73.9780035],
-        zoom: 12,
-        minZoom: 1,
+        zoom: 11,
+        minZoom: 10,
         maxZoom: 14,
         zoomControl: false,
         attributionControl: false,
@@ -31,8 +33,9 @@ define([
 
     initialize: function() {
       this._render();
+      this.cartodbLayer = new CartoDBLayer(this.map);
+
       // this.locations = locationsService;
-      // this.cartodbLayer = new CartoDBLayer();
       // this._render();
       // this._initMarkerLayers();
       // this._setEvents();

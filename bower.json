@@ -20,6 +20,9 @@
     "jquery": "~2.1.1",
     "backbone": "~1.1.2",
     "underscore": "~1.7.0",
-    "normalize.css": "~3.0.2"
+    "normalize.css": "~3.0.2",
+    "underscore.string": "~2.3.3",
+    "Class.js": "~1.0.0",
+    "requirejs-text": "~2.0.12"
   }
 }
