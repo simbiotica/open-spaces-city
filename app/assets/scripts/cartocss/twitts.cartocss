@@ -5,7 +5,7 @@
 	marker-line-opacity: 1;
 	marker-placement: point;
 	marker-type: ellipse;
-	marker-width: 50;
-	marker-fill: #FF6600;
+	marker-width: 20;
+	marker-fill: #4099FF;
 	marker-allow-overlap: true;
 }

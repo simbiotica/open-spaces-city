@@ -9,6 +9,7 @@ define([
   'use strict';
 
   var tileUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';  
+  var tileUrl = 'https://3.maps.nlp.nokia.com/maptile/2.1/maptile/newest/reduced.day/{s}/{z}/{x}/{y}/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
 
   var MapView = Backbone.View.extend({
 
