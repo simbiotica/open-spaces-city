@@ -16,6 +16,10 @@
     "tests"
   ],
   "dependencies": {
-    "leaflet": "~0.7.3"
+    "requirejs": "~2.1.15",
+    "jquery": "~2.1.1",
+    "backbone": "~1.1.2",
+    "underscore": "~1.7.0",
+    "normalize.css": "~3.0.2"
   }
 }
