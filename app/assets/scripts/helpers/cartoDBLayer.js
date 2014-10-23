@@ -46,7 +46,7 @@ define([
 
       cartodb.createLayer(this.map, cartodbOptions)
         .addTo(this.map)
-        .on('done', _.bind(function(layer) {
+        .on('done', _.bind(function() {
           this._setBounds();
         }, this))
         .on('error', function(err) {
@@ -65,7 +65,7 @@ define([
 
       cartodb.createLayer(this.map, cartodbOptions)
         .addTo(this.map)
-        .on('done', _.bind(function(layer) {
+        .on('done', _.bind(function() {
           console.log('done');
         }, this))
         .on('error', function(err) {
