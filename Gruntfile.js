@@ -1,166 +1,179 @@
+/**
+ * Grunt
+ * @param  {Object} grunt
+ */
 module.exports = function(grunt) {
 
   'use strict';
 
+  /**
+   * Load grunt modules
+   */
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
 
+  /**
+   * Grunt tasks configuration
+   * @type {Object}
+   */
   grunt.initConfig({
 
     root: {
-      app: 'app/assets',
-      build: 'public/assets',
+      app: './app/assets',
+      build: './public/assets'
     },
 
+    /**
+     * Clean task
+     * @type {Object}
+     */
     clean: {
-      files: '<%= root.build %>'
+      assets: ['<%= root.build %>']
     },
 
-    copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= root.app %>',
-          dest: '<%= root.build %>',
-          src: [
-            '*.{ico,png,txt}'
-          ]
-        }]
-      },
-      scripts: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= root.app %>/scripts',
-          dest: '<%= root.build %>/scripts',
-          src: [
-            '{,*/}*.*'
-          ]
-        }]
-      }
-    },
-
-    bower: {
-      install: {
-        options: {
-          copy: false
-        }
-      }
-    },
-
-    stylus: {
-      options: {
-        paths: ['./bower_components'],
-        use: [
-          require('fluidity'),
-          function() {
-            return require('autoprefixer-stylus')({browsers: 'last 2 versions'});
-          }
-        ],
-        'include css': true,
-      },
-      compile: {
-        files: {
-          '<%= root.build %>/styles/main.css': '<%= root.app %>/styles/main.styl'
-        }
-      }
-    },
-
+    /**
+     * Grunt jshint task configuration
+     * @type {Object}
+     */
     jshint: {
       options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
+        reporter: require('jshint-stylish'),
+        jshintrc: '.jshintrc'
       },
-      all: [
-        'Gruntfile.js',
-        '<%= root.app %>/scripts/{,*/}{,*/}*.js',
-        // '<%= root.test %>/specs/{,*/}{,*/}*.js',
-        // '<%= root.test %>/runner.js'
+      files: [
+        '<%= root.app %>/scripts/{,*/}*.js',
+        'app/controllers/admin/{,*/}*.js',
+        'app/controllers/api/{,*/}*.js',
+        'app/models/{,*/}*.js',
+        'config/{,*/}*.js',
+        '*.js'
       ]
     },
 
-    // requirejs: {
-    //   compile: {
-    //     options: {
-    //       almond: true,
-    //       wrap: true,
-    //       useStrict: true,
-    //       removeCombined: true,
-    //       baseUrl: './',
-    //       mainConfigFile: '<%= root.app %>/scripts/main.js',
-    //       replaceRequireScript: [{
-    //         files: ['<%= root.dist %>/index.html'],
-    //         module: 'main'
-    //       }],
-    //       modules: [{name: 'main'}],
-    //       appDir: '<%= root.app %>/scripts/',
-    //       dir: '<%= root.dist %>/scripts/',
-    //     }
-    //   }
-    // },
-
-    // imagemin: {
-    //   dist: {
-    //     files: [{
-    //       expand: true,
-    //       cwd: '<%= root.app %>/images/',
-    //       src: ['**/*.{png,jpg,gif}'],
-    //       dest: '<%= root.dist %>/images/'
-    //     }]
-    //   }
-    // },
-
-    // svgmin: {
-    //   dist: {
-    //     files: [{
-    //       expand: true,
-    //       cwd: '<%= root.app %>/images/',
-    //       src: ['**/*.svg'],
-    //       dest: '<%= root.dist %>/images/'
-    //     }]
-    //   }
-    // },
-
-    watch: {
-      styles: {
-        files: [
-          '<%= root.app %>/styles/{,*/}{,*/}*.styl'
-        ],
-        tasks: ['stylus']
-      },
-      scripts: {
+    /**
+     * Grunt requirejs task
+     * @type {Object}
+     */
+    requirejs: {
+      compile: {
         options: {
-          livereload: true
-        },
-        files: '<%= jshint.all %>',
-        tasks: ['jshint', 'copy:scripts']
+          baseUrl: '<%= root.app %>/scripts',
+          mainConfigFile: '<%= root.app %>/scripts/config.js',
+          name: '../../../bower_components/almond/almond',
+          out: '<%= root.build %>/scripts/admin.js'
+        }
       }
     },
 
-    concurrent: {
-      server: [
-        'copy:scripts',
-        'stylus'
-      ]
+    /**
+     * Stylus
+     * @type {Object}
+     */
+    stylus: {
+      compile: {
+        options: {
+          use: [
+            require('fluidity')
+          ]
+        },
+        files: {
+          '<%= root.build %>/styles/main.css': '<%= root.app %>/styles/main.styl',
+          '<%= root.build %>/styles/admin.css': '<%= root.app %>/styles/admin.styl',
+          '<%= root.build %>/styles/auth.css': '<%= root.app %>/styles/auth.styl'
+        }
+      }
+    },
+
+    /**
+     * cssmin task
+     * @type {Object}
+     */
+    cssmin: {
+      combine: {
+        files: {
+          '<%= root.build %>/styles/admin.css': [
+            './bower_components/foundation/css/normalize.css',
+            './bower_components/foundation/css/foundation.css',
+            '<%= root.build %>/styles/admin.css'
+          ],
+          '<%= root.build %>/styles/main.css': [
+            './bower_components/foundation/css/normalize.css',
+            '<%= root.build %>/styles/main.css'
+          ],
+          '<%= root.build %>/styles/auth.css': [
+            './bower_components/foundation/css/normalize.css',
+            './bower_components/foundation/css/foundation.css',
+            '<%= root.build %>/styles/auth.css'
+          ]
+        }
+      }
+    },
+
+    /**
+     * Simlink task, used for development
+     * @type {Object}
+     */
+    symlink: {
+      options: {
+        overwrite: true
+      },
+      scripts: {
+        src: '<%= root.app %>/scripts',
+        dest: '<%= root.build %>/scripts'
+      },
+      // images: {
+      //   src: '<%= root.app %>/images',
+      //   dest: '<%= root.build %>/images'
+      // }
+    },
+
+    /**
+     * Watch task
+     * @type {Object}
+     */
+    watch: {
+      options: {
+        spawn: false,
+      },
+      scripts: {
+        files: '<%= jshint.files %>',
+        tasks: ['jshint'],
+      },
+      styles: {
+        files: '<%= root.build %>/styles/**/*.styl %>',
+        tasks: ['stylus'],
+      }
     }
 
   });
 
-  grunt.registerTask('server', [
+  /**
+   * Grunt test task
+   */
+  grunt.registerTask('test', [
+    'jshint'
+  ]);
+
+  /**
+   * Grunt default task
+   */
+  grunt.registerTask('default', [
+    'test',
     'clean',
-    'bower',
-    'concurrent:server',
+    'stylus',
+    'symlink',
     'watch'
   ]);
 
-  grunt.registerTask('test', [
-    'jshint',
-    'mocha'
-  ]);
-
-  grunt.registerTask('default', [
-    'server'
+  /**
+   * Grunt build task
+   */
+  grunt.registerTask('build', [
+    'test',
+    'clean',
+    'stylus',
+    'cssmin',
+    'requirejs'
   ]);
 
 };

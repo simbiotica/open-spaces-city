@@ -1,0 +1,8 @@
+/**
+ * Database configuration
+ * @type {Object}
+ */
+module.exports = {
+  hostname: 'localhost',
+  database: 'openspaces_dev'
+};

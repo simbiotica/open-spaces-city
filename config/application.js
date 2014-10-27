@@ -1,8 +1,10 @@
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
+var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var secret = require('./secrets').secret;
 
 /**
  * Application configuration
@@ -32,6 +34,14 @@ module.exports = function(app) {
     extended: false
   }));
   app.use(cookieParser());
+  app.use(session({
+    secret: secret,
+    cookie: {
+      maxAge: 60000
+    },
+    saveUninitialized: true,
+    resave: true
+  }));
 
   /**
    * Public folder
@@ -42,6 +52,6 @@ module.exports = function(app) {
   /**
    * Development environment
    */
-  if (app.get('env') === 'development') {}
+  // if (app.get('env') === 'development') {}
 
 };

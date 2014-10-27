@@ -1,6 +1,5 @@
 var express = require('express');
 var apiRouter = express.Router();
-var adminRouter = express.Router();
 
 /**
  * Application Router
@@ -26,6 +25,9 @@ module.exports = function(app) {
 
   apiRouter.route('/tweets')
     .get(tweetsController.index);
+
+  apiRouter.route('/get-tweets')
+    .get(tweetsController.getTweets);
 
   /**
    * Router

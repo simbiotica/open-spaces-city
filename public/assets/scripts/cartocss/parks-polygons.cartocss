@@ -1,7 +1,0 @@
-#nyc_parks{
-  polygon-fill: #136400;
-  polygon-opacity: 0.7;
-  line-color: #FFF;
-  line-width: 1;
-  line-opacity: 1;
-}
